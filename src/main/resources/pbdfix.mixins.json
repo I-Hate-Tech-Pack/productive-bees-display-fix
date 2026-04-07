@@ -1,0 +1,11 @@
+{
+  "required": true,
+  "package": "cn.howxu.pbdfix.mixin",
+  "client": [
+    "BeeCageMixin"
+  ],
+  "compatibilityLevel": "JAVA_21",
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
