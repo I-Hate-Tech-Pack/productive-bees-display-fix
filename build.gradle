@@ -135,6 +135,8 @@ dependencies {
     // The group id is ignored when searching -- in this case, it is "blank"
     // implementation "blank:coolmod-${mc_version}:${coolmod_version}"
     implementation "curse.maven:productivebees-377897:7852443"
+    // implementation "curse.maven:paxi-neoforge-1015157:6485740"
+    // implementation "curse.maven:yungs-api-neoforge-1015100:6715463"
     // Example mod dependency using a file as dependency
     // implementation files("libs/coolmod-${mc_version}-${coolmod_version}.jar")
 

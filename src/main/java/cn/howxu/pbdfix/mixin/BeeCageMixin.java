@@ -30,32 +30,41 @@ public class BeeCageMixin {
     @Nonnull
     @Overwrite
     public Component getName(ItemStack stack) {
-        BeeCage self = (BeeCage) (Object)this;
+        BeeCage self = (BeeCage) (Object) this;
         if (!isFilled(stack)) {
             return Component.translatable(self.getDescriptionId());
         } else {
-            String entityId = ((CustomData)stack.get(DataComponents.CUSTOM_DATA)).copyTag().getString("type");
+            String typeId = ((CustomData) stack.get(DataComponents.CUSTOM_DATA)).copyTag().getString("type");
+            String entityId = ((CustomData) stack.get(DataComponents.CUSTOM_DATA)).copyTag().getString("entity");
             // return Component.translatable(self.getDescriptionId()).append(Component.literal(" (" + entityId + ")"));
-            return Component.translatable(self.getDescriptionId()).append(Component.literal(" (")).append(getTranslationKey(entityId)).append(Component.literal(")"));
+            return Component.translatable(self.getDescriptionId()).append(Component.literal(" (")).append(getTranslationKey(typeId, entityId)).append(Component.literal(")"));
         }
     }
 
     @Shadow
-    public static boolean isFilled(ItemStack itemStack){
+    public static boolean isFilled(ItemStack itemStack) {
         throw new AssertionError(itemStack);
     }
 
-    private static Component getTranslationKey(String entityId){
-        String[] splits = entityId.split(":");
-        if (splits.length < 2){
-            return Component.literal(entityId);
+    private static Component getTranslationKey(String typeId, String entityId) {
+        boolean should_add_prefix = true;
+        String id;
+        if (entityId.equals(ProductiveBees.MODID + ":configurable_bee")) {
+            id = typeId;
+        } else {
+            id = entityId;
+            should_add_prefix = false;
+        }
+        String[] splits = id.split(":");
+        if (splits.length < 2) {
+            return Component.literal(id);
         }
         // gen an entity.productivebee.xxx_bee name from lang.json
-        Component translatable = Component.translatable("entity." + ProductiveBees.MODID + "." + (entityId.split(":"))[1] + "_bee");
+        Component translatable = Component.translatable("entity." + ProductiveBees.MODID + "." + (id.split(":"))[1] + (should_add_prefix ? "_bee" : ""));
         // 相等则返回本身的字符 找到了就返回翻译键
-        if (translatable.getString().equals(entityId)){
-            return Component.literal(entityId);
-        }else {
+        if (translatable.getString().equals(id)) {
+            return Component.literal(id);
+        } else {
             return translatable;
         }
     }
